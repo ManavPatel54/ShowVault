@@ -39,6 +39,13 @@ showSeatSchema.index({ show: 1, seat: 1 }, { unique: true });
 // Efficient availability queries: list all seats for a show filtered by status
 showSeatSchema.index({ show: 1, status: 1 });
 
+// Supports atomic lock filter: status + holdExpiresAt checked together
+// so MongoDB can resolve the $or branch without a full collection scan.
+showSeatSchema.index({ status: 1, holdExpiresAt: 1 });
+
+// Supports releaseSeat ownership check and user-hold dashboards
+showSeatSchema.index({ heldBy: 1 });
+
 const ShowSeat = mongoose.model('ShowSeat', showSeatSchema);
 
 module.exports = ShowSeat;
