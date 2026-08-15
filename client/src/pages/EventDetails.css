@@ -1,0 +1,105 @@
+.event-details-container {
+  padding: 40px 20px;
+}
+
+.event-header {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 40px;
+}
+
+.event-title {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.event-badge {
+  background: rgba(100, 108, 255, 0.2);
+  color: #646cff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.event-description {
+  color: #ccc;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.shows-title {
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.show-day-group {
+  margin-bottom: 30px;
+}
+
+.show-date-header {
+  font-size: 1.3rem;
+  color: #e0e0e0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+.shows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.show-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.show-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.show-time {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.show-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.show-price {
+  font-weight: 600;
+  color: #4CAF50;
+}
+
+.show-select-btn {
+  width: 100%;
+  text-align: center;
+}

@@ -1,0 +1,113 @@
+/* ============================================================
+   Auth.css — Shared styles for Login and Register pages
+   ============================================================ */
+
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 100vh;
+  padding: var(--space-8) 0;
+}
+
+/* Radial glow background */
+.auth__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 40%, rgba(108, 99, 255, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 70% 70%, rgba(255, 101, 132, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.auth__container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Card */
+.auth__card {
+  width: 100%;
+  max-width: 440px;
+  padding: var(--space-10) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* Header */
+.auth__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.auth__icon {
+  font-size: 2.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.auth__title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.auth__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+/* Form */
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Footer text & link */
+.auth__footer-text {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.auth__link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.auth__link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* Phase notice banner */
+.auth__notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(246, 201, 14, 0.08);
+  border: 1px solid rgba(246, 201, 14, 0.2);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  color: var(--color-warning);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .auth__card {
+    padding: var(--space-8) var(--space-5);
+  }
+}
