@@ -62,6 +62,77 @@
   font-size: 2rem;
   font-weight: 700;
   color: #4CAF50;
+  margin-bottom: 15px;
+}
+
+.checkout-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.5;
+}
+
+.checkout-btn:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+.held-seats-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.held-seat-item {
+  display: grid;
+  grid-template-columns: 50px 80px 60px 1fr;
+  align-items: center;
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.held-seat-label {
+  font-weight: bold;
+  color: #2196F3;
+}
+
+.held-seat-type {
+  color: #ccc;
+  font-size: 0.8rem;
+}
+
+.held-seat-price {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.held-seat-timer {
+  text-align: right;
+  color: #FFC107;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.error-banner {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  color: #F44336;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 @media (max-width: 600px) {
@@ -76,5 +147,15 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 15px;
     width: 100%;
+  }
+
+  .held-seat-item {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .held-seat-timer {
+    grid-column: 1 / -1;
+    text-align: left;
   }
 }

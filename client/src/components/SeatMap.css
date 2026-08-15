@@ -82,19 +82,29 @@
   background: rgba(76, 175, 80, 0.4);
 }
 
-.seat-selected {
+.seat-held-by-me {
   background: transparent;
   border-color: #2196F3;
   color: #2196F3;
   box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
 }
 
-.seat-held {
+.seat-held-other {
   background: rgba(255, 193, 7, 0.2);
   border-color: #FFC107;
   color: #FFC107;
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+.seat-pending {
+  animation: pulse-lock 1s infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes pulse-lock {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(0.9); opacity: 0.4; }
 }
 
 .seat-booked {
@@ -136,11 +146,12 @@
   border-color: #4CAF50;
 }
 
-.legend-selected {
+.legend-held-by-me {
   border-color: #2196F3;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
 }
 
-.legend-held {
+.legend-held-other {
   background: rgba(255, 193, 7, 0.2);
   border-color: #FFC107;
 }

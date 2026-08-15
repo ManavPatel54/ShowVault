@@ -71,8 +71,22 @@ const createInventoryForShow = async (showId) => {
 const getShowSeats = async (showId) => {
   const now = new Date();
   const seats = await ShowSeat.find({ show: showId })
-    .populate('show', 'event screen')
-    .populate('seat', 'rowLabel seatNumber seatType');
+    .populate({
+      path: 'show',
+      select: 'event screen startTime endTime basePrice status',
+      populate: [
+        {
+          path: 'event',
+          select: 'title category language durationMinutes'
+        },
+        {
+          path: 'screen',
+          select: 'name screenNumber totalRows totalColumns'
+        }
+      ]
+    })
+    .populate('seat', 'rowLabel seatNumber seatType priceMultiplier')
+    .populate('heldBy', 'name email');
 
   return seats.map((ss) => {
     // If this seat is HELD but the hold has expired, present it as AVAILABLE
@@ -87,6 +101,7 @@ const getShowSeats = async (showId) => {
       seat: ss.seat,
       status: effectiveStatus,
       price: ss.price,
+      heldBy: effectiveStatus === 'HELD' ? ss.heldBy : null,
       // Expose holdExpiresAt only for genuine active holds
       holdExpiresAt: effectiveStatus === 'HELD' ? ss.holdExpiresAt : null
     };
@@ -95,8 +110,22 @@ const getShowSeats = async (showId) => {
 
 const getShowSeatById = async (id) => {
   return await ShowSeat.findById(id)
-    .populate('show', 'event screen')
-    .populate('seat', 'rowLabel seatNumber seatType');
+    .populate({
+      path: 'show',
+      select: 'event screen startTime endTime basePrice status',
+      populate: [
+        {
+          path: 'event',
+          select: 'title category language durationMinutes'
+        },
+        {
+          path: 'screen',
+          select: 'name screenNumber totalRows totalColumns'
+        }
+      ]
+    })
+    .populate('seat', 'rowLabel seatNumber seatType priceMultiplier')
+    .populate('heldBy', 'name email');
 };
 
 // ---------------------------------------------------------------------------
