@@ -9,6 +9,8 @@ const seatRoutes = require("./routes/seat.routes");
 const eventRoutes = require("./routes/event.routes");
 const showRoutes = require("./routes/show.routes");
 const showSeatRoutes = require("./routes/showSeat.routes");
+const bookingRoutes = require("./routes/booking.routes");
+const paymentRoutes = require("./routes/payment.routes");
 
 const app = express();
 
@@ -25,5 +27,7 @@ app.use("/api/seats", seatRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api", showSeatRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/payments", paymentRoutes);
 
 module.exports = app;

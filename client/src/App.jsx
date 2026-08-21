@@ -10,6 +10,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Events from './pages/Events';
 import EventDetails from './pages/EventDetails';
 import SeatSelection from './pages/SeatSelection';
+import Payment from './pages/Payment';
+import BookingConfirmation from './pages/BookingConfirmation';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './pages/AdminDashboard';
 
@@ -47,6 +49,16 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/events/:eventId" element={<EventDetails />} />
         <Route path="/shows/:showId/seats" element={<SeatSelection />} />
+        <Route path="/payment/:bookingId" element={
+          <ProtectedRoute>
+            <Payment />
+          </ProtectedRoute>
+        } />
+        <Route path="/booking-confirmation/:bookingId" element={
+          <ProtectedRoute>
+            <BookingConfirmation />
+          </ProtectedRoute>
+        } />
 
         {/* Admin Dashboard */}
         <Route path="/admin/*" element={

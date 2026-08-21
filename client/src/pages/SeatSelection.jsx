@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getShowSeats, lockShowSeat, releaseShowSeat } from '../services/showSeat.service';
+import { createBooking } from '../services/booking.service';
 import useAuth from '../hooks/useAuth';
 import SeatMap from '../components/SeatMap';
 import ShowSummary from '../components/ShowSummary';
@@ -19,6 +20,9 @@ const SeatSelection = () => {
   
   // Track seats currently undergoing lock/release requests
   const [pendingActionSeats, setPendingActionSeats] = useState(new Set());
+
+  // Booking creation state
+  const [bookingLoading, setBookingLoading] = useState(false);
 
   // Helper to check ownership regardless of whether heldBy is populated or a string ID
   const checkIsHeldByMe = (heldBy, u) => {
@@ -113,6 +117,29 @@ const SeatSelection = () => {
     return heldSeats.reduce((total, seat) => total + seat.price, 0);
   };
 
+  const handleContinueToBooking = async () => {
+    if (heldSeats.length === 0 || bookingLoading) return;
+    setBookingLoading(true);
+    setError('');
+    try {
+      const heldSeatIds = heldSeats.map(s => s._id);
+      const res = await createBooking(showId, heldSeatIds);
+      if (res.success && res.data?._id) {
+        navigate(`/payment/${res.data._id}`);
+      } else {
+        setError('Failed to create booking. Please try again.');
+      }
+    } catch (err) {
+      if (err.response?.status === 401) {
+        navigate('/login');
+      } else {
+        setError(err.response?.data?.message || 'Failed to create booking.');
+      }
+    } finally {
+      setBookingLoading(false);
+    }
+  };
+
   if (loading) return <div className="seat-selection-container"><p className="loading-state">Loading seat map...</p></div>;
   if (!seats || seats.length === 0) return <div className="seat-selection-container"><p className="empty-state">No seats available for this show.</p></div>;
 
@@ -154,7 +181,13 @@ const SeatSelection = () => {
           <div className="selection-total">
             <span className="total-label">Total Amount</span>
             <span className="total-price">₹{calculateTotal()}</span>
-            <button className="checkout-btn" disabled>Continue to Booking</button>
+            <button
+              className="checkout-btn"
+              disabled={bookingLoading}
+              onClick={handleContinueToBooking}
+            >
+              {bookingLoading ? 'Creating Booking...' : 'Continue to Payment'}
+            </button>
           </div>
         </div>
       )}
