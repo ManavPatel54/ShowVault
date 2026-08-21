@@ -1,6 +1,10 @@
 const Show = require('../models/show.model');
 const Event = require('../models/event.model');
 const Screen = require('../models/screen.model');
+const { getCache, setCache, deleteCache } = require('./cache.service');
+const cacheKeys = require('../utils/cacheKeys');
+
+const SHOW_TTL = process.env.REDIS_SHOW_TTL ? parseInt(process.env.REDIS_SHOW_TTL, 10) : 30;
 
 const createShow = async (data) => {
   const event = await Event.findOne({ _id: data.event, isActive: true });
@@ -46,11 +50,29 @@ const createShow = async (data) => {
     throw error;
   }
   
+  await deleteCache(cacheKeys.shows.byEvent(savedShow.event));
+  
   return savedShow;
 };
 
 const getShows = async (query = {}) => {
-  return await Show.find(query).populate('event').populate('screen');
+  // Check if query is exclusively for eventId (or event)
+  const eventId = query.eventId || query.event;
+  const isOnlyEventQuery = Object.keys(query).length === 1 && eventId;
+  let cacheKey;
+
+  if (isOnlyEventQuery) {
+    cacheKey = cacheKeys.shows.byEvent(eventId);
+    const cachedShows = await getCache(cacheKey);
+    if (cachedShows) return cachedShows;
+  }
+
+  const shows = await Show.find(query).populate('event').populate('screen');
+
+  if (isOnlyEventQuery) {
+    await setCache(cacheKey, shows, SHOW_TTL);
+  }
+  return shows;
 };
 
 const getShowById = async (id) => {
@@ -86,11 +108,25 @@ const updateShow = async (id, data) => {
     }
   }
 
-  return await Show.findByIdAndUpdate(id, data, { new: true, runValidators: true }).populate('event').populate('screen');
+  const updatedShow = await Show.findByIdAndUpdate(id, data, { new: true, runValidators: true }).populate('event').populate('screen');
+  
+  if (updatedShow) {
+    const eventId = updatedShow.event._id ? updatedShow.event._id.toString() : updatedShow.event.toString();
+    await deleteCache(cacheKeys.shows.byEvent(eventId));
+  }
+  
+  return updatedShow;
 };
 
 const deleteShow = async (id) => {
-  return await Show.findByIdAndUpdate(id, { status: 'CANCELLED' }, { new: true }).populate('event').populate('screen');
+  const deletedShow = await Show.findByIdAndUpdate(id, { status: 'CANCELLED' }, { new: true }).populate('event').populate('screen');
+  
+  if (deletedShow) {
+    const eventId = deletedShow.event._id ? deletedShow.event._id.toString() : deletedShow.event.toString();
+    await deleteCache(cacheKeys.shows.byEvent(eventId));
+  }
+  
+  return deletedShow;
 };
 
 module.exports = {
